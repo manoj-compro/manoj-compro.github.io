@@ -55,7 +55,7 @@ var CounterPlayer = class {
 };
 
 // src/components/CounterPlayer.ts
-var COUNTER_PLAYER_TAG = "counter-player";
+var COUNTER_PLAYER_TAG = `counter-player-v${"2"}`;
 var CounterPlayerElement = class extends LitElement {
   constructor() {
     super(...arguments);
