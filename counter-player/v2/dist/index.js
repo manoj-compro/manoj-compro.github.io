@@ -22,7 +22,8 @@ var CounterPlayer = class {
     this.count = 0;
   }
   getState() {
-    const atMax = this.maxCount >= 0 ? this.count >= this.maxCount : this.count <= this.maxCount;
+    const limit = Math.abs(this.maxCount);
+    const atMax = Math.abs(this.count) >= limit;
     return {
       id: this.id,
       label: this.label,
@@ -48,9 +49,8 @@ var CounterPlayer = class {
     return this.getState();
   }
   clamp(value) {
-    const min = Math.min(0, this.maxCount);
-    const max = Math.max(0, this.maxCount);
-    return Math.min(Math.max(min, value), max);
+    const limit = Math.abs(this.maxCount);
+    return Math.min(Math.max(-limit, value), limit);
   }
 };
 
