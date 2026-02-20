@@ -99,7 +99,7 @@ var CounterPlayerElement = class extends LitElement {
     this.syncState();
   }
   render() {
-    const statusText = this.playerState.atMax ? "Reached the max." : "Ready to play.";
+    const statusText = this.playerState.atMax ? "Reached the Limit." : "Ready to play.";
     return html`
       <section class="test-player-widget">
         <header class="test-player-widget__header">
