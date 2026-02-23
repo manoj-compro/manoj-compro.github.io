@@ -14,6 +14,7 @@ import { css, html, LitElement } from "lit";
 import { property, state } from "lit/decorators.js";
 
 // src/player.ts
+import lodash from "lodash";
 var CounterPlayer = class {
   constructor(props) {
     this.id = props.id;
@@ -33,11 +34,13 @@ var CounterPlayer = class {
     };
   }
   increment(step = 1) {
-    this.count = this.clamp(this.count + Math.max(1, step));
+    const normalizedStep = lodash.isFinite(step) ? Math.max(1, step) : 1;
+    this.count = this.clamp(this.count + normalizedStep);
     return this.getState();
   }
   decrement(step = 1) {
-    this.count = this.clamp(this.count - Math.max(1, step));
+    const normalizedStep = lodash.isFinite(step) ? Math.max(1, step) : 1;
+    this.count = this.clamp(this.count - normalizedStep);
     return this.getState();
   }
   reset() {
@@ -45,7 +48,7 @@ var CounterPlayer = class {
     return this.getState();
   }
   rename(label) {
-    this.label = label.trim() || this.label;
+    this.label = lodash.trim(label) || this.label;
     return this.getState();
   }
   clamp(value) {
