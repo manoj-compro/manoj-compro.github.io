@@ -1,20 +1,6 @@
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __decorateClass = (decorators, target, key, kind) => {
-  var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc(target, key) : target;
-  for (var i = decorators.length - 1, decorator; i >= 0; i--)
-    if (decorator = decorators[i])
-      result = (kind ? decorator(target, key, result) : decorator(result)) || result;
-  if (kind && result) __defProp(target, key, result);
-  return result;
-};
-
-// src/components/CounterPlayer.ts
-import { css, html, LitElement } from "lit";
-import { property, state } from "lit/decorators.js";
-
-// src/player.ts
-var CounterPlayer = class {
+import { importShared } from "./__federation_fn_import-BSVpSgYU.js";
+const lodash = await importShared("lodash");
+class CounterPlayer {
   constructor(props) {
     this.id = props.id;
     this.label = props.label ?? "Player";
@@ -22,20 +8,24 @@ var CounterPlayer = class {
     this.count = 0;
   }
   getState() {
+    const limit = Math.abs(this.maxCount);
+    const atMax = Math.abs(this.count) >= limit;
     return {
       id: this.id,
       label: this.label,
       count: this.count,
       maxCount: this.maxCount,
-      atMax: this.count >= this.maxCount
+      atMax
     };
   }
   increment(step = 1) {
-    this.count = this.clamp(this.count + Math.max(1, step));
+    const normalizedStep = lodash.isFinite(step) ? Math.max(1, step) : 1;
+    this.count = this.clamp(this.count + normalizedStep);
     return this.getState();
   }
   decrement(step = 1) {
-    this.count = this.clamp(this.count - Math.max(1, step));
+    const normalizedStep = lodash.isFinite(step) ? Math.max(1, step) : 1;
+    this.count = this.clamp(this.count - normalizedStep);
     return this.getState();
   }
   reset() {
@@ -43,17 +33,28 @@ var CounterPlayer = class {
     return this.getState();
   }
   rename(label) {
-    this.label = label.trim() || this.label;
+    this.label = lodash.trim(label) || this.label;
     return this.getState();
   }
   clamp(value) {
-    return Math.min(Math.max(0, value), this.maxCount);
+    const limit = Math.abs(this.maxCount);
+    return Math.min(Math.max(-limit, value), limit);
   }
+}
+var define_process_env_default = {};
+var __defProp = Object.defineProperty;
+var __decorateClass = (decorators, target, key, kind) => {
+  var result = void 0;
+  for (var i = decorators.length - 1, decorator; i >= 0; i--)
+    if (decorator = decorators[i])
+      result = decorator(target, key, result) || result;
+  if (result) __defProp(target, key, result);
+  return result;
 };
-
-// src/components/CounterPlayer.ts
-var COUNTER_PLAYER_TAG = "counter-player";
-var CounterPlayerElement = class extends LitElement {
+const { css, html, LitElement } = await importShared("lit");
+const { property, state } = await importShared("lit/decorators.js");
+const COUNTER_PLAYER_TAG = `counter-player-v${define_process_env_default.PLAYER_VERSION ?? "1"}`;
+class CounterPlayerElement extends LitElement {
   constructor() {
     super(...arguments);
     this.playerId = "demo";
@@ -96,7 +97,7 @@ var CounterPlayerElement = class extends LitElement {
     this.syncState();
   }
   render() {
-    const statusText = this.playerState.atMax ? "Reached the max." : "Ready to play.";
+    const statusText = this.playerState.atMax ? "Reached the Limit." : "Ready to play.";
     return html`
       <section class="test-player-widget">
         <header class="test-player-widget__header">
@@ -198,30 +199,28 @@ var CounterPlayerElement = class extends LitElement {
     }
   `;
   }
-};
+}
 __decorateClass([
   property({ type: String, attribute: "player-id" })
-], CounterPlayerElement.prototype, "playerId", 2);
+], CounterPlayerElement.prototype, "playerId");
 __decorateClass([
   property({ type: String })
-], CounterPlayerElement.prototype, "label", 2);
+], CounterPlayerElement.prototype, "label");
 __decorateClass([
   property({ type: Number, attribute: "max-count" })
-], CounterPlayerElement.prototype, "maxCount", 2);
+], CounterPlayerElement.prototype, "maxCount");
 __decorateClass([
   state()
-], CounterPlayerElement.prototype, "playerState", 2);
-var defineCounterPlayer = () => {
+], CounterPlayerElement.prototype, "playerState");
+const defineCounterPlayer = () => {
   if (!customElements.get(COUNTER_PLAYER_TAG)) {
     customElements.define(COUNTER_PLAYER_TAG, CounterPlayerElement);
   }
 };
-
-// src/index.ts
 defineCounterPlayer();
 export {
   COUNTER_PLAYER_TAG,
   CounterPlayerElement,
   defineCounterPlayer
 };
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=index-CpYJ4uMk.js.map
